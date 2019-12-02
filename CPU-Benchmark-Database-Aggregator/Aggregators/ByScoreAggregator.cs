@@ -91,7 +91,7 @@ namespace CPU_Benchmark_Database_Aggregator.Aggregators
 
 			foreach (var byCoreResult in byCoreResults)
 			{
-				list.Add(new Aggregate($"Threads {byCoreResult.Key}", "byCores",
+				list.Add(new Aggregate(byCoreResult.Key.ToString(), "byCores",
 					byCoreResult.Value
 						.GetRange(0, byCoreResult.Value.Count < 100 ? byCoreResult.Value.Count : 100)
 						.Select(s => s.UUID)));
