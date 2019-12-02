@@ -6,8 +6,8 @@ using System.IO;
 using System.Text;
 using CPU_Benchmark_Database_Aggregator.Aggregators;
 using CPU_Benchmark_Database_Aggregator.Models;
-using CPU_Benchmark_Server_Aggregator.Models;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 #endregion
 
@@ -25,12 +25,27 @@ namespace CPU_Benchmark_Database_Aggregator
 			var baseDirectory = Environment.GetEnvironmentVariable("GITHUB_WORKSPACE") + "/saves";
 			var saves = Directory.GetFiles(baseDirectory, "*.json");
 			var aggregates = new List<Aggregate>();
+			var settings = new JsonSerializerSettings();
+
+			settings.Converters.Add(new StringEnumConverter());
 
 			foreach (var saveFile in saves)
 			{
 				try
 				{
-					var save = JsonConvert.DeserializeObject<Save>(File.ReadAllText(saveFile));
+					Save save;
+
+					try
+					{
+						save = JsonConvert.DeserializeObject<Save>(File.ReadAllText(saveFile), settings);
+					}
+					catch (Exception e)
+					{
+						Console.WriteLine();
+						Console.WriteLine(e);
+						Console.WriteLine("Retrying...");
+						save = JsonConvert.DeserializeObject<Save>(File.ReadAllText(saveFile));
+					}
 
 					foreach (var aggregator in aggregators)
 					{
@@ -39,7 +54,10 @@ namespace CPU_Benchmark_Database_Aggregator
 				}
 				catch (Exception e)
 				{
+					Console.WriteLine();
 					Console.WriteLine(e);
+					Console.WriteLine(saveFile);
+					Console.WriteLine();
 				}
 			}
 

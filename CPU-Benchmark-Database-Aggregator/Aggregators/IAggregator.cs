@@ -1,13 +1,16 @@
-﻿using CPU_Benchmark_Database_Aggregator.Models;
-using CPU_Benchmark_Server_Aggregator.Models;
+﻿#region using
+
 using System.Collections.Generic;
+using CPU_Benchmark_Database_Aggregator.Models;
+
+#endregion
 
 namespace CPU_Benchmark_Database_Aggregator.Aggregators
 {
-    internal interface IAggregator
-    {
-        void ProcessSave(Save save);
+	internal interface IAggregator
+	{
+		void ProcessSave(Save save);
 
-        IEnumerable<Aggregate> GetAggregatedResults();
-    }
+		IEnumerable<Aggregate> GetAggregatedResults();
+	}
 }

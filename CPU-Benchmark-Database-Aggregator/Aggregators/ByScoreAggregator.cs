@@ -3,7 +3,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using CPU_Benchmark_Database_Aggregator.Models;
-using CPU_Benchmark_Server_Aggregator.Models;
 
 #endregion
 
