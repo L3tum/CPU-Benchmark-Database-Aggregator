@@ -90,6 +90,8 @@ namespace CPU_Benchmark_Database_Aggregator
 					validName = validName.Replace(c, '_');
 				}
 
+				validName = validName.Replace("@", "at").Replace(" ", "_").Replace(":", "_");
+
 				var file = $"{dir}/{validName}";
 
 				if (File.Exists(file))
