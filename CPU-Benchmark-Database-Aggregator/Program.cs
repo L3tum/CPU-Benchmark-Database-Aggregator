@@ -30,7 +30,7 @@ namespace CPU_Benchmark_Database_Aggregator
 			{
 				try
 				{
-					var save = JsonConvert.DeserializeObject<Save>(saveFile);
+					var save = JsonConvert.DeserializeObject<Save>(File.ReadAllText(saveFile));
 
 					foreach (var aggregator in aggregators)
 					{
