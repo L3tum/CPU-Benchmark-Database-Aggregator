@@ -16,9 +16,11 @@ namespace CPU_Benchmark_Database_Aggregator
 {
 	internal class Program
 	{
-		private static readonly IEnumerable<IAggregator> aggregators = new[]
+		private static readonly IEnumerable<IAggregator> aggregators = new IAggregator[]
 		{
-			new ByScoreAggregator()
+			new ByScoreAggregator(),
+			new PaginationAggregator(),
+			new ByHighestFrequency()
 		};
 
 		private static void Main(string[] args)
@@ -55,7 +57,17 @@ namespace CPU_Benchmark_Database_Aggregator
 
 					foreach (var aggregator in aggregators)
 					{
-						aggregator.ProcessSave(save);
+						try
+						{
+							aggregator.ProcessSave(save);
+						}
+						catch (Exception e)
+						{
+							Console.WriteLine();
+							Console.WriteLine($"Aggregator {aggregator.GetType().Name} failed processing save {saveFile}!");
+							Console.WriteLine(e);
+							Console.WriteLine();
+						}
 					}
 				}
 				catch (Exception e)
@@ -69,7 +81,17 @@ namespace CPU_Benchmark_Database_Aggregator
 
 			foreach (var aggregator in aggregators)
 			{
-				aggregates.AddRange(aggregator.GetAggregatedResults());
+				try
+				{
+					aggregates.AddRange(aggregator.GetAggregatedResults());
+				}
+				catch (Exception e)
+				{
+					Console.WriteLine();
+					Console.WriteLine($"Aggregator {aggregator.GetType().Name} failed getting results!");
+					Console.WriteLine(e);
+					Console.WriteLine();
+				}
 			}
 
 			baseDirectory = Environment.GetEnvironmentVariable("GITHUB_WORKSPACE") + "/aggregations";
