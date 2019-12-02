@@ -3,4 +3,4 @@ name: 'CPU-Benchmark-Database-Aggregator'
 description: 'Aggregator for the CPU Benchmark Database'
 runs:
   using: 'docker'
-  image: 'CPU-Benchmark-Database-Aggregator/Dockerfile'
+  image: 'Dockerfile'
