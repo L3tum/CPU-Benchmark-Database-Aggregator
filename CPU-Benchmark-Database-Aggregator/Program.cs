@@ -44,7 +44,7 @@ namespace CPU_Benchmark_Database_Aggregator
 					{
 						save = JsonConvert.DeserializeObject<Save>(File.ReadAllText(saveFile), settings);
 					}
-					catch (Exception e)
+					catch (Exception)
 					{
 						Console.WriteLine();
 						Console.WriteLine(saveFile);
@@ -64,7 +64,8 @@ namespace CPU_Benchmark_Database_Aggregator
 						catch (Exception e)
 						{
 							Console.WriteLine();
-							Console.WriteLine($"Aggregator {aggregator.GetType().Name} failed processing save {saveFile}!");
+							Console.WriteLine(
+								$"Aggregator {aggregator.GetType().Name} failed processing save {saveFile}!");
 							Console.WriteLine(e);
 							Console.WriteLine();
 						}
