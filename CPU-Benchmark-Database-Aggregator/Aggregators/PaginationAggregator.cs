@@ -30,9 +30,12 @@ namespace CPU_Benchmark_Database_Aggregator.Aggregators
 
 			while (i < savesList.Count)
 			{
-				var range = savesList.Skip(i).Take(10).Select(s => s.UUID);
+				Console.WriteLine(i);
+				var range = savesList.Skip(i).Take(10).ToList().Select(s => s.UUID);
+				Console.WriteLine(range.Count());
 				list.Add(new Aggregate((i % 10 + 1).ToString(), "pagination", range));
 				i += 10;
+				Console.WriteLine(i + " of " + savesList.Count);
 			}
 
 			return list;
