@@ -1,15 +1,24 @@
-﻿using CPU_Benchmark_Server_Aggregator.Models;
-using HardwareInformation;
-using System;
+﻿#region using
+
 using System.Collections.Generic;
-using System.Text;
+
+#endregion
 
 namespace CPU_Benchmark_Database_Aggregator.Models
 {
-    class Aggregate
-    {
-        public List<Result> ResultsST = new List<Result>();
-        public List<Result> ResultsMT = new List<Result>();
-        public MachineInformation MachineInformation = new MachineInformation();
-    }
+	internal class Aggregate
+	{
+		public Aggregate(string name, string category, IEnumerable<string> resultSaveUUIDs)
+		{
+			Name = name;
+			Category = category;
+			ResultSaveUUIDs = resultSaveUUIDs;
+		}
+
+		public string Name { get; set; }
+
+		public string Category { get; set; }
+
+		public IEnumerable<string> ResultSaveUUIDs { get; set; }
+	}
 }
