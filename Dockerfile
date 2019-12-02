@@ -15,4 +15,4 @@ RUN dotnet publish "CPU-Benchmark-Database-Aggregator.csproj" -c Release -o /app
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "CPU-Benchmark-Database-Aggregator.dll"]
+ENTRYPOINT ["dotnet", "/app/CPU-Benchmark-Database-Aggregator.dll"]
