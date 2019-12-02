@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using CPU_Benchmark_Database_Aggregator.Aggregators;
 using CPU_Benchmark_Database_Aggregator.Models;
@@ -31,7 +32,7 @@ namespace CPU_Benchmark_Database_Aggregator
 
 			foreach (var saveFile in saves)
 			{
-				Console.WriteLine();
+				Console.Write('.');
 
 				try
 				{
@@ -43,10 +44,14 @@ namespace CPU_Benchmark_Database_Aggregator
 					}
 					catch (Exception e)
 					{
+						Console.WriteLine();
 						Console.WriteLine(saveFile);
 						Console.WriteLine("Retrying...");
 						save = JsonConvert.DeserializeObject<Save>(File.ReadAllText(saveFile));
+						Console.WriteLine();
 					}
+
+					save.UUID = saveFile.Split('/').Last().Replace(".json", "");
 
 					foreach (var aggregator in aggregators)
 					{
@@ -55,8 +60,10 @@ namespace CPU_Benchmark_Database_Aggregator
 				}
 				catch (Exception e)
 				{
-					Console.WriteLine(e);
+					Console.WriteLine();
 					Console.WriteLine(saveFile);
+					Console.WriteLine(e);
+					Console.WriteLine();
 				}
 			}
 
@@ -64,6 +71,8 @@ namespace CPU_Benchmark_Database_Aggregator
 			{
 				aggregates.AddRange(aggregator.GetAggregatedResults());
 			}
+
+			baseDirectory = Environment.GetEnvironmentVariable("GITHUB_WORKSPACE") + "/aggregations";
 
 			foreach (var aggregate in aggregates)
 			{

@@ -12,13 +12,13 @@ namespace CPU_Benchmark_Database_Aggregator.Models
 		{
 			Name = name;
 			Category = category;
-			ResultSaveUUIDs = resultSaveUUIDs;
+			ResultSaveFiles = resultSaveUUIDs;
 		}
 
 		public string Name { get; set; }
 
 		public string Category { get; set; }
 
-		public IEnumerable<string> ResultSaveUUIDs { get; set; }
+		public IEnumerable<string> ResultSaveFiles { get; set; }
 	}
 }
