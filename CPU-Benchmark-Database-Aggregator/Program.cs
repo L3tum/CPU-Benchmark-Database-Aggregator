@@ -31,6 +31,8 @@ namespace CPU_Benchmark_Database_Aggregator
 
 			foreach (var saveFile in saves)
 			{
+				Console.WriteLine();
+
 				try
 				{
 					Save save;
@@ -41,8 +43,7 @@ namespace CPU_Benchmark_Database_Aggregator
 					}
 					catch (Exception e)
 					{
-						Console.WriteLine();
-						Console.WriteLine(e);
+						Console.WriteLine(saveFile);
 						Console.WriteLine("Retrying...");
 						save = JsonConvert.DeserializeObject<Save>(File.ReadAllText(saveFile));
 					}
@@ -54,10 +55,8 @@ namespace CPU_Benchmark_Database_Aggregator
 				}
 				catch (Exception e)
 				{
-					Console.WriteLine();
 					Console.WriteLine(e);
 					Console.WriteLine(saveFile);
-					Console.WriteLine();
 				}
 			}
 

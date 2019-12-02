@@ -92,13 +92,17 @@ namespace CPU_Benchmark_Database_Aggregator.Aggregators
 			foreach (var byCoreResult in byCoreResults)
 			{
 				list.Add(new Aggregate($"Threads {byCoreResult.Key}", "byCores",
-					byCoreResult.Value.GetRange(0, 100).Select(s => s.UUID)));
+					byCoreResult.Value
+						.GetRange(0, byCoreResult.Value.Count < 100 ? byCoreResult.Value.Count : 100)
+						.Select(s => s.UUID)));
 			}
 
 			foreach (var byBenchmarkResult in byBenchmarkResults)
 			{
 				list.Add(new Aggregate(byBenchmarkResult.Key, "byBenchmarks",
-					byBenchmarkResult.Value.GetRange(0, 100).Select(s => s.UUID)));
+					byBenchmarkResult.Value
+						.GetRange(0, byBenchmarkResult.Value.Count < 100 ? byBenchmarkResult.Value.Count : 100)
+						.Select(s => s.UUID)));
 			}
 
 			return list;
