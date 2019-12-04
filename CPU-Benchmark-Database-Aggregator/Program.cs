@@ -101,16 +101,21 @@ namespace CPU_Benchmark_Database_Aggregator
 				}
 			}
 
+			if (Directory.Exists(AGGREGATIONS_DIRECTORY))
+			{
+				Directory.Delete(AGGREGATIONS_DIRECTORY, true);
+			}
+
+			Directory.CreateDirectory(AGGREGATIONS_DIRECTORY);
+
 			foreach (var aggregate in aggregates)
 			{
 				var dir = $"{AGGREGATIONS_DIRECTORY}/{aggregate.Category}";
 
-				if (Directory.Exists(dir))
+				if (!Directory.Exists(dir))
 				{
-					Directory.Delete(dir, true);
+					Directory.CreateDirectory(dir);
 				}
-
-				Directory.CreateDirectory(dir);
 
 				var validName = new StringBuilder(aggregate.Name);
 
