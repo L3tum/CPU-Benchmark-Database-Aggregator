@@ -20,13 +20,19 @@ namespace CPU_Benchmark_Database_Aggregator
 		{
 			new ByScoreAggregator(),
 			new PaginationAggregator(),
-			new ByHighestFrequency()
+			new ByHighestFrequency(),
+			new AverageByCpuAggregator()
 		};
+
+		internal static string SAVES_DIRECTORY { get; private set; }
+		internal static string AGGREGATIONS_DIRECTORY { get; private set; }
 
 		private static void Main(string[] args)
 		{
-			var baseDirectory = Environment.GetEnvironmentVariable("GITHUB_WORKSPACE") + "/saves";
-			var saves = Directory.GetFiles(baseDirectory, "*.json");
+			SAVES_DIRECTORY = (Environment.GetEnvironmentVariable("GITHUB_WORKSPACE") ?? ".") + "/saves";
+			AGGREGATIONS_DIRECTORY = (Environment.GetEnvironmentVariable("GITHUB_WORKSPACE") ?? ".") + "/aggregations";
+
+			var saves = Directory.GetFiles(SAVES_DIRECTORY, "*.json");
 			var aggregates = new List<Aggregate>();
 			var settings = new JsonSerializerSettings();
 
@@ -95,16 +101,16 @@ namespace CPU_Benchmark_Database_Aggregator
 				}
 			}
 
-			baseDirectory = Environment.GetEnvironmentVariable("GITHUB_WORKSPACE") + "/aggregations";
-
 			foreach (var aggregate in aggregates)
 			{
-				var dir = $"{baseDirectory}/{aggregate.Category}";
+				var dir = $"{AGGREGATIONS_DIRECTORY}/{aggregate.Category}";
 
-				if (!Directory.Exists(dir))
+				if (Directory.Exists(dir))
 				{
-					Directory.CreateDirectory(dir);
+					Directory.Delete(dir, true);
 				}
+
+				Directory.CreateDirectory(dir);
 
 				var validName = new StringBuilder(aggregate.Name);
 
@@ -115,7 +121,7 @@ namespace CPU_Benchmark_Database_Aggregator
 
 				validName = validName.Replace("@", "at").Replace(" ", "_").Replace(":", "_");
 
-				var file = $"{dir}/{validName}";
+				var file = $"{dir}/{validName}.json";
 
 				if (File.Exists(file))
 				{

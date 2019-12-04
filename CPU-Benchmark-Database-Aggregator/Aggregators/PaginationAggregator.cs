@@ -1,6 +1,5 @@
 ﻿#region using
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using CPU_Benchmark_Database_Aggregator.Models;
@@ -11,13 +10,13 @@ namespace CPU_Benchmark_Database_Aggregator.Aggregators
 {
 	internal class PaginationAggregator : IAggregator
 	{
-		private readonly List<Save> savesList = new List<Save>();
+		private readonly List<string> savesList = new List<string>();
 
 		public void ProcessSave(Save save)
 		{
 			if (savesList.Count < 100)
 			{
-				savesList.Add(save);
+				savesList.Add(save.UUID);
 			}
 		}
 
@@ -28,7 +27,7 @@ namespace CPU_Benchmark_Database_Aggregator.Aggregators
 
 			while (i < savesList.Count)
 			{
-				var range = savesList.Skip(i).Take(10).Select(s => s.UUID).ToList();
+				var range = savesList.Skip(i).Take(10).ToList();
 				list.Add(new Aggregate((i / 10 + 1).ToString(), "pagination", range));
 				i += 10;
 			}
