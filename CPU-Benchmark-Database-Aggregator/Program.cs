@@ -40,6 +40,12 @@ namespace CPU_Benchmark_Database_Aggregator
 
 			foreach (var saveFile in saves)
 			{
+				// Skip automatically generated saves
+				if (saveFile.Contains(".automated."))
+				{
+					continue;
+				}
+
 				Console.Write('.');
 
 				try
