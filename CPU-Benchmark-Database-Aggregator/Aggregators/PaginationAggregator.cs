@@ -1,5 +1,6 @@
 ﻿#region using
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using CPU_Benchmark_Database_Aggregator.Models;
@@ -20,7 +21,7 @@ namespace CPU_Benchmark_Database_Aggregator.Aggregators
 				{
 					SaveFile = save.UUID,
 					Value =
-						$"{save.MachineInformation.Cpu.Caption} === {save.Results.Average(r => r.Value.First(bench => bench.Benchmark.ToLowerInvariant() == "category: all").Points)}"
+						$"{save.MachineInformation.Cpu.Caption} === {save.MachineInformation.Cpu.Vendor} === {Math.Round(save.Results.Average(r => r.Value.First(bench => bench.Benchmark.ToLowerInvariant() == "category: all").Points), 0)}"
 				});
 			}
 		}

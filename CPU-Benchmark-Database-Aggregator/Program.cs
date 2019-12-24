@@ -42,6 +42,7 @@ namespace CPU_Benchmark_Database_Aggregator
 				// Skip automatically generated saves
 				if (saveFile.Contains(".automated."))
 				{
+					File.Delete(saveFile);
 					continue;
 				}
 
