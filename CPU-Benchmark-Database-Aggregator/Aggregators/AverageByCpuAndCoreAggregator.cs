@@ -11,7 +11,7 @@ namespace CPU_Benchmark_Database_Aggregator.Aggregators
 {
 	internal class AverageByCpuAndCoreAggregator : IAggregator
 	{
-		// Cores -> CPU Caption -> List of points
+		// Cores -> CPU Name -> List of points
 		private readonly Dictionary<uint, Dictionary<string, List<double>>> scores =
 			new Dictionary<uint, Dictionary<string, List<double>>>();
 
@@ -24,12 +24,12 @@ namespace CPU_Benchmark_Database_Aggregator.Aggregators
 					scores.Add(keyValuePair.Key, new Dictionary<string, List<double>>());
 				}
 
-				if (!scores[keyValuePair.Key].ContainsKey(save.MachineInformation.Cpu.Caption))
+				if (!scores[keyValuePair.Key].ContainsKey(save.MachineInformation.Cpu.Name))
 				{
-					scores[keyValuePair.Key].Add(save.MachineInformation.Cpu.Caption, new List<double>());
+					scores[keyValuePair.Key].Add(save.MachineInformation.Cpu.Name, new List<double>());
 				}
 
-				scores[keyValuePair.Key][save.MachineInformation.Cpu.Caption].Add(keyValuePair.Value
+				scores[keyValuePair.Key][save.MachineInformation.Cpu.Name].Add(keyValuePair.Value
 					.First(benchmark => benchmark.Benchmark.ToLowerInvariant() == "category: all").Points);
 			}
 		}
