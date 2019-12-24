@@ -10,13 +10,18 @@ namespace CPU_Benchmark_Database_Aggregator.Aggregators
 {
 	internal class PaginationAggregator : IAggregator
 	{
-		private readonly List<string> savesList = new List<string>();
+		private readonly List<Entry> savesList = new List<Entry>();
 
 		public void ProcessSave(Save save)
 		{
 			if (savesList.Count < 100)
 			{
-				savesList.Add(save.UUID);
+				savesList.Add(new Entry
+				{
+					SaveFile = save.UUID,
+					Value =
+						$"{save.MachineInformation.Cpu.Caption} === {save.Results.Average(r => r.Value.First(bench => bench.Benchmark.ToLowerInvariant() == "category: all").Points)}"
+				});
 			}
 		}
 

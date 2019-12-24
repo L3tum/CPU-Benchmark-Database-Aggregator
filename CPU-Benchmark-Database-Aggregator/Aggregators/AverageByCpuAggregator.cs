@@ -42,7 +42,7 @@ namespace CPU_Benchmark_Database_Aggregator.Aggregators
 
 		public IEnumerable<Aggregate> GetAggregatedResults()
 		{
-			var saveFiles = new List<string>();
+			var saveFiles = new List<Tuple<string, string>>();
 
 			foreach (var pair in byCpu)
 			{
@@ -183,7 +183,8 @@ namespace CPU_Benchmark_Database_Aggregator.Aggregators
 					}
 				}
 
-				var fileName = save.MachineInformation.Cpu.Caption.Replace("@", "at").Replace(" ", "_").Replace(",", "_");
+				var fileName = save.MachineInformation.Cpu.Caption.Replace("@", "at").Replace(" ", "_")
+					.Replace(",", "_");
 
 				var file = $"{Program.SAVES_DIRECTORY}/average_{fileName}.automated.json";
 
@@ -194,12 +195,13 @@ namespace CPU_Benchmark_Database_Aggregator.Aggregators
 
 				File.WriteAllText(file, JsonConvert.SerializeObject(save));
 
-				saveFiles.Add($"average_{fileName}.automated");
+				saveFiles.Add(Tuple.Create($"average_{fileName}.automated", save.MachineInformation.Cpu.Caption));
 			}
 
 			return new[]
 			{
-				new Aggregate("average", "byCPU", saveFiles)
+				new Aggregate("average", "byCPU",
+					saveFiles.Select(tuple => new Entry {SaveFile = tuple.Item1, Value = tuple.Item2}))
 			};
 		}
 

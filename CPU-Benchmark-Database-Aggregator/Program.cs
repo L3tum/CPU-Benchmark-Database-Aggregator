@@ -18,7 +18,6 @@ namespace CPU_Benchmark_Database_Aggregator
 	{
 		private static readonly IEnumerable<IAggregator> aggregators = new IAggregator[]
 		{
-			new ByScoreAggregator(),
 			new PaginationAggregator(),
 			new ByHighestFrequency(),
 			new AverageByCpuAggregator()
