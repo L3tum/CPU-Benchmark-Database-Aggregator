@@ -20,7 +20,8 @@ namespace CPU_Benchmark_Database_Aggregator
 		{
 			new PaginationAggregator(),
 			new ByHighestFrequency(),
-			new AverageByCpuAggregator()
+			new AverageByCpuAggregator(),
+			new AverageByCpuAndCoreAggregator(), 
 		};
 
 		internal static string SAVES_DIRECTORY { get; private set; }
