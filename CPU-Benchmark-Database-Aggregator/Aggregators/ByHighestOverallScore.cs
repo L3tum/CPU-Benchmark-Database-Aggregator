@@ -1,5 +1,6 @@
 ﻿#region using
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using CPU_Benchmark_Database_Aggregator.Models;
@@ -14,8 +15,8 @@ namespace CPU_Benchmark_Database_Aggregator.Aggregators
 
 		public void ProcessSave(Save save)
 		{
-			var highestResult = save.Results.Average(result =>
-				result.Value.First(benchmark => benchmark.Benchmark.ToLowerInvariant() == "category: all").Points);
+			var highestResult = Math.Round(save.Results.Average(result =>
+				result.Value.First(benchmark => benchmark.Benchmark.ToLowerInvariant() == "category: all").Points), 0);
 
 			var inserted = false;
 
