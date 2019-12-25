@@ -15,6 +15,8 @@ namespace CPU_Benchmark_Database_Aggregator.Aggregators
 		private readonly Dictionary<uint, Dictionary<string, List<double>>> scores =
 			new Dictionary<uint, Dictionary<string, List<double>>>();
 
+		private readonly Dictionary<string, string> vendors = new Dictionary<string, string>();
+
 		public void ProcessSave(Save save)
 		{
 			foreach (var keyValuePair in save.Results)
@@ -31,6 +33,11 @@ namespace CPU_Benchmark_Database_Aggregator.Aggregators
 
 				scores[keyValuePair.Key][save.MachineInformation.Cpu.Name].Add(keyValuePair.Value
 					.First(benchmark => benchmark.Benchmark.ToLowerInvariant() == "category: all").Points);
+
+				if (!vendors.ContainsKey(save.MachineInformation.Cpu.Name))
+				{
+					vendors.Add(save.MachineInformation.Cpu.Name, save.MachineInformation.Cpu.Vendor);
+				}
 			}
 		}
 
@@ -42,7 +49,7 @@ namespace CPU_Benchmark_Database_Aggregator.Aggregators
 			{
 				aggregates.Add(new Aggregate(keyValuePair.Key.ToString(), "averageByCoreCount",
 					keyValuePair.Value.Select(kvp => new Entry
-						{Value = $"{kvp.Key} === {Math.Round(kvp.Value.Average(), 0)}"})));
+						{Value = $"{kvp.Key} === {vendors[kvp.Key]} === {Math.Round(kvp.Value.Average(), 0)}"})));
 			}
 
 			return aggregates;
