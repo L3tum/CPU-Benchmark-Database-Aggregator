@@ -22,7 +22,8 @@ namespace CPU_Benchmark_Database_Aggregator
 			new ByHighestFrequency(),
 			new AverageByCpuAggregator(),
 			new AverageByCpuAndCoreAggregator(),
-			new ByHighestSingleScore()
+			new ByHighestSingleScore(),
+			new ByHighestOverallScore()
 		};
 
 		internal static string SAVES_DIRECTORY { get; private set; }
