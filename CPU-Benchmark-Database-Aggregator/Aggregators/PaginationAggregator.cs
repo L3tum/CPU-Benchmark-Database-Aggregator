@@ -21,7 +21,7 @@ namespace CPU_Benchmark_Database_Aggregator.Aggregators
 				{
 					SaveFile = save.UUID,
 					Value =
-						$"{save.MachineInformation.Cpu.Caption} === {save.MachineInformation.Cpu.Vendor} === {Math.Round(save.Results.Average(r => r.Value.First(bench => bench.Benchmark.ToLowerInvariant() == "category: all").Points), 0)}"
+						$"{save.MachineInformation.Cpu.Name.Trim()} === {save.MachineInformation.Cpu.Vendor} === {Math.Round(save.Results.Average(r => r.Value.First(bench => bench.Benchmark.ToLowerInvariant() == "category: all").Points), 0)}"
 				});
 			}
 		}
