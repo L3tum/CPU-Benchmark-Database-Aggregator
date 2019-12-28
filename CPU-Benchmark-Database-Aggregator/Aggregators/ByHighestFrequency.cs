@@ -23,10 +23,15 @@ namespace CPU_Benchmark_Database_Aggregator.Aggregators
 			for (var i = 0; i < singleCoreHighest.Count; i++)
 			{
 				if (save.MachineInformation.Cpu.MaxClockSpeed >
-				    uint.Parse(singleCoreHighest[i].Value))
+				    uint.Parse(singleCoreHighest[i].Value.Split(" === ")[2]))
 				{
 					singleCoreHighest.Insert(i,
-						new Entry {SaveFile = save.UUID, Value = save.MachineInformation.Cpu.MaxClockSpeed.ToString()});
+						new Entry
+						{
+							SaveFile = save.UUID,
+							Value =
+								$"{save.MachineInformation.Cpu.Name} === {save.MachineInformation.Cpu.Vendor} === {save.MachineInformation.Cpu.MaxClockSpeed.ToString()}"
+						});
 					inserted = true;
 					break;
 				}
@@ -35,7 +40,11 @@ namespace CPU_Benchmark_Database_Aggregator.Aggregators
 			if (!inserted && singleCoreHighest.Count < 100)
 			{
 				singleCoreHighest.Add(new Entry
-					{SaveFile = save.UUID, Value = save.MachineInformation.Cpu.MaxClockSpeed.ToString()});
+				{
+					SaveFile = save.UUID,
+					Value =
+						$"{save.MachineInformation.Cpu.Name} === {save.MachineInformation.Cpu.Vendor} === {save.MachineInformation.Cpu.MaxClockSpeed.ToString()}"
+				});
 			}
 		}
 
