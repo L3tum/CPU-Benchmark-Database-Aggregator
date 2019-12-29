@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using CPU_Benchmark_Common;
 using CPU_Benchmark_Database_Aggregator.Models;
 
 #endregion

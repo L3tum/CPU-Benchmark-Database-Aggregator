@@ -4,8 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using CPU_Benchmark_Common;
 using CPU_Benchmark_Database_Aggregator.Models;
 using HardwareInformation;
+using HardwareInformation.Information;
 using Newtonsoft.Json;
 
 #endregion
@@ -49,9 +51,9 @@ namespace CPU_Benchmark_Database_Aggregator.Aggregators
 				var save = new Save();
 
 				save.MachineInformation = new MachineInformation();
-				save.MachineInformation.RAMSticks = new List<MachineInformation.RAM>();
-				save.MachineInformation.Cpu = new MachineInformation.CPU();
-				save.MachineInformation.SmBios = new MachineInformation.SMBios();
+				save.MachineInformation.RAMSticks = new List<RAM>();
+				save.MachineInformation.Cpu = new CPU();
+				save.MachineInformation.SmBios = new SMBios();
 				save.MachineInformation.Cpu = pair.Value[0].MachineInformation.Cpu;
 				save.MachineInformation.Cpu.Cores.Clear();
 				save.MachineInformation.Cpu.MaxClockSpeed =
@@ -86,8 +88,8 @@ namespace CPU_Benchmark_Database_Aggregator.Aggregators
 							0);
 
 					var manufacturer = pair.Value.GroupBy(s => s.MachineInformation.RAMSticks.Count > i
-							? s.MachineInformation.RAMSticks[i].Manfucturer
-							: s.MachineInformation.RAMSticks.First().Manfucturer)
+							? s.MachineInformation.RAMSticks[i].Manufacturer
+							: s.MachineInformation.RAMSticks.First().Manufacturer)
 						.OrderByDescending(gp => gp.Count()).First().Key;
 
 					var formFactor = pair.Value.GroupBy(s => s.MachineInformation.RAMSticks.Count > i
@@ -95,12 +97,12 @@ namespace CPU_Benchmark_Database_Aggregator.Aggregators
 							: s.MachineInformation.RAMSticks.First().FormFactor)
 						.OrderByDescending(gp => gp.Count()).First().Key;
 
-					save.MachineInformation.RAMSticks.Add(new MachineInformation.RAM
+					save.MachineInformation.RAMSticks.Add(new RAM
 					{
 						Capacity = capacity,
 						Speed = speed,
 						CapacityHRF = FormatBytes(capacity),
-						Manfucturer = manufacturer,
+						Manufacturer = manufacturer,
 						FormFactor = formFactor
 					});
 				}
@@ -151,8 +153,6 @@ namespace CPU_Benchmark_Database_Aggregator.Aggregators
 					{
 						var perBenchmarkPoints = 0.0;
 						var perBenchmarkTiming = 0.0;
-						var refPerBenchmarkPoints = 0.0;
-						var refPerBenchmarkTiming = 0.0;
 						var count = 0;
 
 						foreach (var perCoresResult in perCoresResults)
@@ -161,8 +161,6 @@ namespace CPU_Benchmark_Database_Aggregator.Aggregators
 							{
 								perBenchmarkPoints += result.Points;
 								perBenchmarkTiming += result.Timing;
-								refPerBenchmarkPoints += result.ReferencePoints;
-								refPerBenchmarkTiming += result.ReferenceTiming;
 
 								count++;
 							}
@@ -170,8 +168,6 @@ namespace CPU_Benchmark_Database_Aggregator.Aggregators
 
 						perBenchmarkPoints /= count;
 						perBenchmarkTiming /= count;
-						refPerBenchmarkPoints /= count;
-						refPerBenchmarkTiming /= count;
 
 						if (!save.Results.ContainsKey(i))
 						{
@@ -179,7 +175,7 @@ namespace CPU_Benchmark_Database_Aggregator.Aggregators
 						}
 
 						save.Results[i].Add(new Result(benchmark, perBenchmarkTiming, perBenchmarkPoints,
-							refPerBenchmarkTiming, refPerBenchmarkPoints));
+							0.0d, 0.0d, 0.0d));
 					}
 				}
 

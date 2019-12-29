@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using CPU_Benchmark_Common;
 using CPU_Benchmark_Database_Aggregator.Aggregators;
 using CPU_Benchmark_Database_Aggregator.Models;
 using Newtonsoft.Json;
